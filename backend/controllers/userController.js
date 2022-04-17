@@ -82,7 +82,11 @@ const loginUser = asyncHandler(async (req, res) => {
 //@access Private
 
 const getUser = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: 'User data' });
+  //Get the id from the protect middleware
+  const { id } = req.user;
+
+  const { _id, name, email } = await User.findById(id);
+  res.status(200).json({ id: _id, name, email });
 });
 
 //Generate JWT
