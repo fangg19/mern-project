@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { FaSignInAlt, FaUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../components/Spinner';
-import { login } from '../features/auth/authSlice';
+import { toast } from 'react-toastify';
+import { login, reset } from '../features/auth/authSlice';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -16,8 +16,19 @@ const Login = () => {
     email: '',
     password: '',
   });
-
   const { email, password } = formData;
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      navigate('/');
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -28,8 +39,13 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(login(formData));
-    navigate('/');
+
+    const userData = {
+      email,
+      password,
+    };
+
+    dispatch(login(userData));
   };
 
   if (isLoading) return <Spinner />;
@@ -37,9 +53,7 @@ const Login = () => {
   return (
     <>
       <section className="heading">
-        <h1>
-          <FaSignInAlt /> Login
-        </h1>
+        <h2>Login</h2>
         <p>Please login in into your account.</p>
       </section>
       <section className="form">
