@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { create } from '../../../../backend/models/noteModel';
 import notesService from './notesService';
 
 const initialState = {
@@ -11,16 +10,31 @@ const initialState = {
 };
 
 //Get all the notes
-export const getNotes = createAsyncThunk('notes/getNotes', async (thunkAPI) => {
-  return await notesService.getNotes();
-});
+export const getNotes = createAsyncThunk(
+  'notes/getNotes',
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await notesService.getNotes(token);
+    } catch (error) {
+      const errorMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(errorMessage);
+    }
+  }
+);
 
 //Add a note
 export const addNote = createAsyncThunk(
   'notes/addNote',
   async (noteData, thunkAPI) => {
     try {
-      return await notesService.addNote(noteData);
+      const token = thunkAPI.getState().auth.user.token;
+      return await notesService.addNote(noteData, token);
     } catch (error) {
       const errorMessage =
         (error.response &&
@@ -54,9 +68,10 @@ export const editNote = createAsyncThunk(
 //Delete a note
 export const deleteNote = createAsyncThunk(
   'notes/deleteNote',
-  async (noteData, thunkAPI) => {
+  async (noteId, thunkAPI) => {
     try {
-      return await notesService.deleteNote(noteData);
+      const token = thunkAPI.getState().auth.user.token;
+      return await notesService.deleteNote(noteId, token);
     } catch (error) {
       const errorMessage =
         (error.response &&
@@ -83,31 +98,36 @@ export const notesSlice = createSlice({
       .addCase(getNotes.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        state.notes = action.payload;
       })
       .addCase(getNotes.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        state.user = null;
+        state.notes = null;
       })
-      .addCase(logout.fulfilled, (state) => {
-        state.user = null;
-      })
-      .addCase(login.pending, (state) => {
+      .addCase(addNote.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(addNote.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.isError = false;
-        state.user = action.payload;
+        state.notes.push(action.payload);
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(addNote.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
-        state.user = null;
+      })
+      .addCase(deleteNote.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteNote.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.notes = state.notes.filter((singleNote) => {
+          return singleNote._id !== action.payload._id;
+        });
       });
   },
 });
