@@ -7,9 +7,9 @@ const Note = require('../models/noteModel');
 //@access Private
 const getNotes = asyncHandler(async (req, res) => {
   //Get id from auth middleware
-  const { id } = req.user.id;
-  const notes = await Note.find({ user: id });
 
+  const notes = await Note.find({ user: req.user.id });
+  console.log(notes);
   res.status(200).json(notes);
 });
 
@@ -25,6 +25,7 @@ const setNote = asyncHandler(async (req, res) => {
     text: req.body.text,
     user: req.user.id,
   });
+  console.log(note);
   res.status(200).json(note);
 });
 
@@ -61,8 +62,8 @@ const updateNote = asyncHandler(async (req, res) => {
 //@access Private
 const deleteNote = asyncHandler(async (req, res) => {
   const { id } = req.params;
-
   const note = await Note.findById(id);
+
   if (!note) {
     res.status(400);
     throw new Error('Note not found.');

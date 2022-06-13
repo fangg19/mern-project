@@ -97,6 +97,9 @@ h3 {
   margin: 10px 0;
   padding: 20px 0 10px;
   position: relative;
+  border-radius: 10px;
+  /* box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px; */
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
 }
 
 .note .close {
@@ -105,7 +108,10 @@ h3 {
   right: 15px;
   cursor: pointer;
   border: none;
-  background: none;
+  background: #e74c3c;
+  color: white;
+  padding: 3px 6px;
+  border-radius: 50%;
 }
 
 .form,
@@ -151,6 +157,17 @@ h3 {
   justify-content: center;
 }
 
+.btn-logout {
+  background: #e74c3c !important;
+  border: 1px solid #c0392b !important;
+}
+
+.btn-success {
+  background: #2ecc71 !important;
+  border: 1px solid #27ae60 !important;
+
+}
+
 .btn svg {
   margin-right: 8px;
 }
@@ -161,13 +178,15 @@ h3 {
 }
 
 .btn-block {
-  width: 100%;
-  margin-bottom: 20px;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 50px;
 }
 
-.btn:hover {
+/* .btn:hover {
   transform: scale(0.98);
-}
+} */
 
 .loadingSpinnerContainer {
   position: fixed;

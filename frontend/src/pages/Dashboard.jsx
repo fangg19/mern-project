@@ -33,7 +33,7 @@ const Dashboard = () => {
   return (
     <>
       <section className="heading">
-        <h1>Welcome {user && user.name}</h1>
+        <h2>Welcome {user && user.name}</h2>
         <p>Notes Dashboard</p>
       </section>
 

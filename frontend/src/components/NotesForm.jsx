@@ -19,11 +19,12 @@ const NotesForm = () => {
   };
 
   return (
-    <section>
+    <section className="form">
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="text">Note</label>
+          {/* <label htmlFor="text">Note</label> */}
           <input
+            placeholder="Type your fast note"
             type="text"
             name="text"
             id="text"
@@ -32,7 +33,7 @@ const NotesForm = () => {
           />
         </div>
         <div className="form-group">
-          <button className="btn btn-block" type="submit">
+          <button className="btn btn-block btn-success" type="submit">
             Add Note
           </button>
         </div>

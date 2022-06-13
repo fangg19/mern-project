@@ -18,12 +18,12 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo">
-        <Link to="/">TakeNotes</Link>
+        <Link to="/">FastNotes📒</Link>
       </div>
       <ul>
         {user ? (
           <li>
-            <button className="btn" onClick={onLogout}>
+            <button className="btn btn-logout" onClick={onLogout}>
               <FaSignOutAlt /> Logout
             </button>
           </li>
