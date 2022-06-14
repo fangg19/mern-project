@@ -22,7 +22,7 @@ const Dashboard = () => {
       navigate('/login');
     }
 
-    if (isError) dispatch(reset());
+    if (isError) console.log(message);
 
     //get the notes
     dispatch(getNotes());
