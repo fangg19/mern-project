@@ -7,18 +7,23 @@ import { getNotes, reset } from '../features/notes/notesSlice';
 import Spinner from '../components/Spinner';
 
 const Dashboard = () => {
-  const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.auth);
   const { notes, isLoading, isError, message } = useSelector(
     (state) => state.notes
   );
+
+  console.log(notes);
   useEffect(() => {
-    if (isError) console.log(message);
     //redirect user if it's not logged in
-    if (user === null) {
+    if (!user) {
       navigate('/login');
     }
+
+    if (isError) dispatch(reset());
+
     //get the notes
     dispatch(getNotes());
 
@@ -40,7 +45,7 @@ const Dashboard = () => {
       <NotesForm />
 
       <section className="content">
-        {notes.length > 0 ? (
+        {notes !== null && notes.length > 0 ? (
           <div className="goals">
             {notes.map((singleNote) => {
               return <NoteItem key={singleNote._id} singleNote={singleNote} />;

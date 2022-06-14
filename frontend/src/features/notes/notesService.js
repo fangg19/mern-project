@@ -9,8 +9,7 @@ const getNotes = async (token) => {
     },
   };
   const response = await axios.get(API_URL, config);
-  const { data } = response;
-  return data;
+  return response.data;
 };
 
 const addNote = async (noteData, token) => {
@@ -20,14 +19,12 @@ const addNote = async (noteData, token) => {
     },
   };
   const response = await axios.post(API_URL, noteData, config);
-  const { data } = response;
-  return data;
+  return response.data;
 };
 
 const editNote = async (noteData) => {
   const response = await axios.patch(`${API_URL}/${noteData.id}`, noteData);
-  const { data } = response;
-  return data;
+  return response.data;
 };
 
 const deleteNote = async (noteId, token) => {
@@ -37,8 +34,7 @@ const deleteNote = async (noteId, token) => {
     },
   };
   const response = await axios.delete(API_URL + noteId, config);
-  const { data } = response;
-  return data;
+  return response.data;
 };
 
 const noteService = {

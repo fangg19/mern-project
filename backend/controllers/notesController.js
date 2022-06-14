@@ -8,7 +8,6 @@ const getNotes = asyncHandler(async (req, res) => {
   //Get id from auth middleware
 
   const notes = await Note.find({ user: req.user.id });
-  console.log(notes);
   res.status(200).json(notes);
 });
 
@@ -24,7 +23,6 @@ const setNote = asyncHandler(async (req, res) => {
     text: req.body.text,
     user: req.user.id,
   });
-  console.log(note);
   res.status(200).json(note);
 });
 

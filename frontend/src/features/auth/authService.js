@@ -4,11 +4,11 @@ const API_URL = '/api/users';
 
 const register = async (userData) => {
   const response = await axios.post(`${API_URL}/register`, userData);
-  const { data } = response;
-  if (data) {
-    localStorage.setItem('user', JSON.stringify(data));
+
+  if (response.data) {
+    localStorage.setItem('user', JSON.stringify(response.data));
   }
-  return data;
+  return response.data;
 };
 
 const logout = async () => {
@@ -17,11 +17,11 @@ const logout = async () => {
 
 const login = async (userData) => {
   const response = await axios.post(`${API_URL}/login`, userData);
-  const { data } = response;
-  if (data) {
-    localStorage.setItem('user', JSON.stringify(data));
+  console.log(response.data);
+  if (response.data) {
+    localStorage.setItem('user', JSON.stringify(response.data));
+    return response.data;
   }
-  return data;
 };
 
 const authService = {
